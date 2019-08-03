@@ -83,7 +83,7 @@ int main() {
 	//std::cout << "Allocating randomx_cache..." << std::endl;
 	cache = randomx_alloc_cache(RANDOMX_FLAG_DEFAULT);
 
-	runTest("Cache initialization", RANDOMX_ARGON_ITERATIONS == 3 && RANDOMX_ARGON_LANES == 1 && RANDOMX_ARGON_MEMORY == 262144 && stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"),	[]() {
+	runTest("Cache initialization", RANDOMX_ARGON_ITERATIONS == 3 && RANDOMX_ARGON_LANES == 1 && RANDOMX_ARGON_MEMORY == 262144 && stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"),	[]() {
 		initCache("test key 000");
 		uint64_t* cacheMemory = (uint64_t*)cache->memory;
 		assert(cacheMemory[0] == 0x191e0e1d23c02186);
@@ -138,7 +138,7 @@ int main() {
 		assert(randomx_reciprocal_fast(0xffffffff) == 9223372039002259456U);
 	});
 
-	runTest("Dataset initialization (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), []() {
+	runTest("Dataset initialization (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), []() {
 		initCache("test key 000");
 		uint64_t datasetItem[8];
 		randomx::initDatasetItem(cache, (uint8_t*)&datasetItem, 0);
@@ -151,7 +151,7 @@ int main() {
 		assert(datasetItem[0] == 0x145a5091f7853099);
 	});
 
-	runTest("Dataset initialization (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), []() {
+	runTest("Dataset initialization (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), []() {
 		initCache("test key 000");
 		randomx::JitCompiler jit;
 		jit.generateSuperscalarHash(cache->programs, cache->reciprocalCache);
@@ -997,15 +997,15 @@ int main() {
 		assert(equalsHex(hash, "f60caf300917760337e8ce51487484e6a33d4aaa15aa79c985efb4ea00390918"));
 	};
 
-	runTest("Hash test 1a (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_a);
+	runTest("Hash test 1a (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_a);
 
-	runTest("Hash test 1b (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_b);
+	runTest("Hash test 1b (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_b);
 
-	runTest("Hash test 1c (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_c);
+	runTest("Hash test 1c (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_c);
 
-	runTest("Hash test 1d (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_d);
+	runTest("Hash test 1d (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_d);
 
-	runTest("Hash test 1e (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_e);
+	runTest("Hash test 1e (interpreter)", stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_e);
 
 	randomx_release_cache(cache);
 	cache = randomx_alloc_cache(RANDOMX_FLAG_JIT);
@@ -1014,15 +1014,15 @@ int main() {
 	initCache("test key 000");
 	vm = randomx_create_vm(RANDOMX_FLAG_JIT, cache, nullptr);
 
-	runTest("Hash test 2a (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_a);
+	runTest("Hash test 2a (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_a);
 
-	runTest("Hash test 2b (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_b);
+	runTest("Hash test 2b (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_b);
 
-	runTest("Hash test 2c (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_c);
+	runTest("Hash test 2c (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_c);
 
-	runTest("Hash test 2d (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_d);
+	runTest("Hash test 2d (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_d);
 
-	runTest("Hash test 2e (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomX\x03"), test_e);
+	runTest("Hash test 2e (compiler)", RANDOMX_HAVE_COMPILER && stringsEqual(RANDOMX_ARGON_SALT, "RandomTXX\x48"), test_e);
 
 	std::cout << std::endl << "All tests PASSED" << std::endl;
 
